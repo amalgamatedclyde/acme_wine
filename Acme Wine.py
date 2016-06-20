@@ -5,7 +5,7 @@ import ConfigParser
 import mongo_operations
 import validator
 from validator import Validator
-from mongo_operations import save2mongo, retrieve_valid_orders
+from mongo_operations import save2mongo, retrieve_valid_orders, retrieve_all_orders
 
 config = ConfigParser.ConfigParser()
 config.read('/home/clyde/lot18/Acme Wine/rules.cfg')
@@ -35,17 +35,22 @@ def import_orders():
         elif not result:
             return 'there has been a problem uploading your order'
 
-@app.route('/orders/<int:post_id>', methods=['GET'])
+
 @app.route('/orders/', methods=['GET'])
-def get_orders(orders=None):
+def get_orders():
     if not request.args:
         return render_template('get_orders.html')
     else:
-        if request.args.get('order number'):
-            return str(request.args.get('order number'))
-        elif request.args.get('checkbox')=='true':
+        if request.args.get('checkbox')=='true':
             orders = retrieve_valid_orders()
             return jsonify(orders=orders)
+
+        else:
+            orders = retrieve_all_orders()
+            return jsonify(orders=orders)
+
+def get_one(order_num):
+    pass
 
 
 if __name__ == '__main__':

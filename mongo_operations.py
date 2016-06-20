@@ -13,7 +13,11 @@ def save2mongo(validated_records):
 
 def retrieve_valid_orders():
     orders = db.orders
-    valid_orders = [order for order in orders.find({"valid": True})]
-    for d in valid_orders:
-        d.pop("_id", None)
+    valid_orders = [order for order in orders.find({"valid": True}, projection={'id': 1, 'name': 1, 'valid': 1, '_id': 0})]
     return valid_orders
+
+
+def retrieve_all_orders():
+    orders = db.orders
+    orders = [order for order in orders.find(projection={'id': 1, 'name': 1, 'valid': 1, '_id': 0})]
+    return orders

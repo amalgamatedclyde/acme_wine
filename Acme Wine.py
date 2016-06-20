@@ -18,7 +18,7 @@ app = Flask(__name__)
 
 
 @app.route('/', methods=['GET', 'POST'])
-@app.route('/orders/import', methods=['GET', 'POST'])
+@app.route('/orders/import/', methods=['GET', 'POST'])
 def import_orders():
     if request.method == 'GET':
         return render_template('import_orders.html')

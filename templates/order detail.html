@@ -9,9 +9,27 @@
             console.log(src);
             window.location = src;
         }
+
+        function import_orders(){
+            window.location = "/orders/import/";
+        }
+
+         function retrieve_orders(){
+            window.location = "/orders/";
+        }
+
+        function order_detail(){
+            window.location = "/order_detail/";
+        }
+
     </script>
 </head>
 <body>
+<div style="{float: left;}">
+    <button onclick="import_orders()">Import orders</button>
+    <button onclick="retrieve_orders()">Retrieve all</button>
+    <button onclick="order_detail()">Order Detail</button>
+</div>
 <h1>Acme Wine</h1>
     <h2>order retriever</h2>
         <label><input type="text" id="order_num">Enter order number</label></br>

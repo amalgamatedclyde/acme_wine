@@ -21,3 +21,9 @@ def retrieve_all_orders():
     orders = db.orders
     orders = [order for order in orders.find(projection={'id': 1, 'name': 1, 'valid': 1, '_id': 0})]
     return orders
+
+def retrieve_one(order_num):
+    orders = db.orders
+    order = orders.find_one({'id': order_num}, projection={'_id': 0, "name": 1, "state": 1, "zipcode": 1,
+                                                           "birthday": 1, "valid": 1, "errors": 1})
+    return order

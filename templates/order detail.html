@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>order detail</title>
+    <script>
+        function submit_order(){
+            var src = document.getElementById("order_num").value;
+            console.log(src);
+            window.location = src;
+        }
+    </script>
+</head>
+<body>
+<h1>Acme Wine</h1>
+    <h2>order retriever</h2>
+        <label><input type="text" id="order_num">Enter order number</label></br>
+        <input type="button" onclick="submit_order()" value="Retrieve">
+</body>
+</html>

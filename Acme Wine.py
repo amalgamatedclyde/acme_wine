@@ -5,7 +5,7 @@ import ConfigParser
 import mongo_operations
 import validator
 from validator import Validator
-from mongo_operations import save2mongo, retrieve_valid_orders, retrieve_all_orders
+from mongo_operations import save2mongo, retrieve_valid_orders, retrieve_all_orders, retrieve_one
 
 config = ConfigParser.ConfigParser()
 config.read('/home/clyde/lot18/Acme Wine/rules.cfg')
@@ -49,8 +49,18 @@ def get_orders():
             orders = retrieve_all_orders()
             return jsonify(orders=orders)
 
-def get_one(order_num):
-    pass
+
+@app.route('/order_detail/<order_num>/', methods=['GET'])
+@app.route('/order_detail/', methods=['GET'])
+def get_one(order_num=None):
+    if not order_num:
+        return render_template('order detail.html')
+    order = retrieve_one(order_num)
+    if order:
+        return jsonify(retrieve_one(order_num))
+    else:
+        return "That order number was not found"
+
 
 
 if __name__ == '__main__':

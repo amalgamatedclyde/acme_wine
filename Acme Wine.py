@@ -20,7 +20,6 @@ app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/orders/import', methods=['GET', 'POST'])
 def import_orders():
-
     if request.method == 'GET':
         return render_template('import_orders.html')
     if request.method == 'POST':
@@ -41,7 +40,7 @@ def get_orders():
     if not request.args:
         return render_template('get_orders.html')
     else:
-        if request.args.get('checkbox')=='true':
+        if request.args.get('checkbox') =='true':
             orders = retrieve_valid_orders()
             return jsonify(orders=orders)
 

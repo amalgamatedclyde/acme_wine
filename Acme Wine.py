@@ -34,6 +34,8 @@ def import_orders():
         return render_template('import_orders.html')
     if request.method == 'POST' and request.files['file']:
         orders = request.files['file']
+        if not orders.filename.endswith('.csv'):
+            return 'Please select a valid csv file'
         v = Validator(orders)
         v.prohibited_states = prohibited_states
         v.validators = validators

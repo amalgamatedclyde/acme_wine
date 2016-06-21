@@ -4,7 +4,7 @@ import csv
 import re
 import datetime
 import state_codes
-
+# state codes is a dictionary of state names and their 2 letter abbreviations
 
 class ValidationError(Exception):
 
@@ -15,7 +15,10 @@ class ValidationError(Exception):
 class Validator(object):
     """Validator class is instantiated with an orders file object as the
         argument passed to __init__. When the instance is called it
-        iteratively validates each order and returns a list of validated orders"""
+        iteratively validates each order and returns a list of validated orders.
+        The validators and prohibited states attributes are set from a config file,
+        rules.cfg, after instantiating the object
+        """
     validators = []
     prohibited_states =[]
 
@@ -57,8 +60,8 @@ class Validator(object):
                 self.validate_age(record)
             if 'email' in self.validators and record.get('email'):
                 self.validate_email(record)
-            # if 'ny_nets' in validators and record.get('state'):
-            #     self.no_ny_nets(record)
+            if 'ny_nets' in self.validators and record.get('state'):
+                self.no_ny_nets(record)
 
         if all(self.test_results):
             try:

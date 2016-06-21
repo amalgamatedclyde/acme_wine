@@ -7,6 +7,17 @@ import validator
 from validator import Validator
 from mongo_operations import save2mongo, retrieve_valid_orders, retrieve_all_orders, retrieve_one
 
+#######################################################
+# Validator module is used to create a Validator object
+# All validation rules are are applied by an instance of the
+# validator object. see module for details.
+# Mongo_operations module contains all database functions
+#######################################################
+
+
+
+
+
 config = ConfigParser.ConfigParser()
 config.read('/home/clyde/lot18/Acme Wine/rules.cfg')
 # print config.sections()
@@ -14,7 +25,6 @@ prohibited_states = config.get('ProhibitedStates', 'states').split(',')
 validators = config.get('ValidationRules', 'validators').split(',')
 
 app = Flask(__name__)
-
 
 
 @app.route('/', methods=['GET', 'POST'])

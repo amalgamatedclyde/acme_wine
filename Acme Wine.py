@@ -32,7 +32,7 @@ app = Flask(__name__)
 def import_orders():
     if request.method == 'GET':
         return render_template('import_orders.html')
-    if request.method == 'POST':
+    if request.method == 'POST' and request.files['file']:
         orders = request.files['file']
         v = Validator(orders)
         v.prohibited_states = prohibited_states
@@ -43,6 +43,8 @@ def import_orders():
             return 'your orders have been succesfully posted'
         elif not result:
             return 'there has been a problem uploading your order'
+    else:
+        return  render_template('import_orders.html')
 
 
 @app.route('/orders/', methods=['GET'])

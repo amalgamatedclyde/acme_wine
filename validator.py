@@ -25,7 +25,7 @@ class Validator(object):
     def __init__(self, csvfile):
         self.csvfile = csvfile
         reader = csv.reader(self.csvfile, delimiter='|')
-        self.headers = reader.next()
+        self.headers = reader.__next__()
         self.orders = (row for row in reader)
         self.prev_record = []
 
@@ -34,7 +34,7 @@ class Validator(object):
         self.validated_records = []
         while True:
             try:
-                self.__validate(dict(zip(self.headers, self.orders.next())))
+                self.__validate(dict(zip(self.headers, self.orders.__next__())))
             except StopIteration:
                 return self.validated_records
 

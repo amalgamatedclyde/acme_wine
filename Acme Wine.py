@@ -1,11 +1,12 @@
-from flask import Flask, request , url_for
-from flask import render_template, redirect, jsonify
-from werkzeug.utils import secure_filename
-import ConfigParser
+from flask import Flask, request
+from flask import render_template, jsonify
+from configparser import ConfigParser
 import mongo_operations
 import validator
 from validator import Validator
 from mongo_operations import save2mongo, retrieve_valid_orders, retrieve_all_orders, retrieve_one
+import io
+
 
 #######################################################
 # Validator module is used to create a Validator object
@@ -18,7 +19,7 @@ from mongo_operations import save2mongo, retrieve_valid_orders, retrieve_all_ord
 
 
 
-config = ConfigParser.ConfigParser()
+config = ConfigParser()
 config.read('/home/clyde/lot18/Acme Wine/rules.cfg')
 # print config.sections()
 prohibited_states = config.get('ProhibitedStates', 'states').split(',')
@@ -33,14 +34,15 @@ def import_orders():
     if request.method == 'GET':
         return render_template('import_orders.html')
     if request.method == 'POST' and request.files['file']:
-        orders = request.files['file']
-        if not orders.filename.endswith('.csv'):
+        if not request.files['file'].filename.endswith('.csv'):
             return 'Please select a valid csv file'
-        v = Validator(orders)
+        orders = request.files['file'].read().decode(encoding="utf-8")
+        buf = io.StringIO(initial_value=orders)
+        v = Validator(buf)
         v.prohibited_states = prohibited_states
         v.validators = validators
         validated_records = v()
-        result = save2mongo(validated_records)
+        result = (save2mongo(validated_records))
         if result:
             return 'your orders have been succesfully posted'
         elif not result:
@@ -75,6 +77,5 @@ def get_one(order_num=None):
         return "That order number was not found"
 
 
-
 if __name__ == '__main__':
-    app.run(debug=True, threaded=True)
+    app.run(debug=True)

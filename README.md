@@ -8,3 +8,7 @@ of the POST request.
 The Werkzeg FileStorage data structure is responsible for setting the streaming mode for the attached file in requests['file'].
 
 I originally tried editing this code to accommodate text files, but it required too many changes versus the current approach.
+
+gevent reads versus flask reads:
+
+![reads](db_reads.png)

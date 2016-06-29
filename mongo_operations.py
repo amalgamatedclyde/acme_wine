@@ -9,8 +9,8 @@ db = client.acme
 
 def save2mongo(validated_records):
     orders = db.orders
-    result = orders.insert_many(validated_records)
-    return result.acknowledged
+    r = orders.insert_many(validated_records)
+    return r.acknowledged
 
 def retrieve_valid_orders():
     orders = db.orders

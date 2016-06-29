@@ -1,11 +1,13 @@
+from gevent import monkey; monkey.patch_all()
 from flask import Flask, request
 from flask import render_template, jsonify
 from configparser import ConfigParser
 import mongo_operations
 import validator
 from validator import Validator
-from mongo_operations import save2mongo, retrieve_valid_orders, retrieve_all_orders, retrieve_one
+from mongo_operations import retrieve_valid_orders, retrieve_all_orders, retrieve_one, save2mongo
 import io
+from gevent import wsgi
 
 
 #######################################################
@@ -26,7 +28,7 @@ prohibited_states = config.get('ProhibitedStates', 'states').split(',')
 validators = config.get('ValidationRules', 'validators').split(',')
 
 app = Flask(__name__)
-
+app.debug = True
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/orders/import', methods=['GET', 'POST'])
@@ -42,7 +44,7 @@ def import_orders():
         v.prohibited_states = prohibited_states
         v.validators = validators
         validated_records = v()
-        result = (save2mongo(validated_records))
+        result = save2mongo(validated_records)
         if result:
             return 'your orders have been succesfully posted'
         elif not result:
@@ -78,4 +80,6 @@ def get_one(order_num=None):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    server = wsgi.WSGIServer(('127.0.0.1', 5000), app)
+    server.serve_forever()
+    # app.run()

@@ -4,6 +4,7 @@ import csv
 import re
 import datetime
 import state_codes
+from bson import objectid
 # state codes is a dictionary of state names and their 2 letter abbreviations
 
 class ValidationError(Exception):
@@ -44,7 +45,6 @@ class Validator(object):
            the test results list"""
         self.test_results = [True]
         self.errors = []
-
         if [record.get('state'), record.get('zipcode')] == self.prev_record:
             record['valid'] = True
             self.validated_records.append(record)
@@ -72,10 +72,11 @@ class Validator(object):
 
             finally:
                 record['valid'] = True
+                record['_id'] = str(objectid.ObjectId())
         else:
             record['valid'] = False
+            # record['_id'] = str(objectid.ObjectId())
 
-        # print 'valid', record['valid']
         record['errors'] = self.errors
         # print 'error', self.errors
         self.validated_records.append(record)

@@ -3,7 +3,12 @@ __author__ = 'clyde'
 from pymongo import MongoClient
 
 
-client = MongoClient('mongodb://admin:ZaT5Whr2p1@ds017514.mlab.com:17514/acme')
+mongolab_uri = 'mongodb://admin:rjTzHb1AHv@ds013165-a0.mlab.com:13165,ds013165-a1.mlab.com:13165/acme?replicaSet=rs-ds013165'
+client = MongoClient(mongolab_uri,
+                     connectTimeoutMS=30000,
+                     socketTimeoutMS=None,
+                     socketKeepAlive=True,
+                     j=False)
 db = client.acme
 
 
